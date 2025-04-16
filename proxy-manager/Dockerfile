@@ -71,10 +71,8 @@ RUN cp /app/docker/rootfs/etc/letsencrypt.ini /etc
 RUN  cp /app/docker/rootfs/etc/logrotate.d/nginx-proxy-manager /etc/logrotate.d 
 
 RUN  sed -i "s#user npm;#user root;#" /etc/nginx/nginx.conf 
-RUN  sed -i "s#root /app/frontend;#root /opt/nginx-proxy-manager/frontend;#" 
-    /etc/nginx/conf.d/production.conf 
-RUN  sed -i "s#table.string('id').notNull().primary();#table.string('id', 32).notNull().primary();#" 
-    /opt/nginx-proxy-manager/migrations/20190227065017_settings.js 
+RUN  sed -i "s#root /app/frontend;#root /opt/nginx-proxy-manager/frontend;#" /etc/nginx/conf.d/production.conf 
+RUN  sed -i "s#table.string('id').notNull().primary();#table.string('id', 32).notNull().primary();#" /opt/nginx-proxy-manager/migrations/20190227065017_settings.js 
 
 RUN  mkdir -p  /run/nginx 
 
