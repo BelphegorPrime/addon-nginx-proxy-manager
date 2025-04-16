@@ -40,16 +40,13 @@ RUN \
     \
     && yarn global add modclean \
     \
-    && curl -J -L -o /tmp/nginxproxymanager.tar.gz \
-        "https://github.com/NginxProxyManager/nginx-proxy-manager/archive/${NGINX_PROXY_MANAGER_VERSION}.tar.gz" \
+    && curl -fSL -o /tmp/nginxproxymanager.tar.gz "https://github.com/NginxProxyManager/nginx-proxy-manager/archive/${NGINX_PROXY_MANAGER_VERSION}.tar.gz" \
+    && tar -tzf /tmp/nginxproxymanager.tar.gz >/dev/null \
+    && tar -xzf /tmp/nginxproxymanager.tar.gz --strip 1 -C /app \
     && mkdir /app \
-    && tar zxvf \
-        /tmp/nginxproxymanager.tar.gz \
-        --strip 1 -C /app \
-    \
-    && for i in /usr/src/*.patch; do \
-        patch -d /app -p 1 < "${i}"; done \
-    \
+    && if ls /usr/src/*.patch 1> /dev/null 2>&1; then \
+     for i in /usr/src/*.patch; do patch -d /app -p 1 < "${i}"; done; \
+    fi \
     && cd /app/frontend \
     && yarn install \
     && yarn build \
